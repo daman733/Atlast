@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>For Ishanvi</title>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(-45deg, #ffe2e2, #fad0c4, #fbc2eb, #a18cd1);
+      background-size: 400% 400%;
+      animation: dreamyGradient 15s ease infinite;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    @keyframes dreamyGradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .slider-container {
+      position: relative;
+      width: 100%;
+      max-width: 480px;
+      height: 90vh;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .slides {
+      position: relative;
+      flex-grow: 1;
+    }
+
+    .slide {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      transition: opacity 0.8s ease-in-out;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      top: 0;
+      left: 0;
+    }
+
+    .slide.active {
+      opacity: 1;
+      z-index: 1;
+    }
+
+    .slide img {
+      width: 180px;
+      margin-bottom: 20px;
+    }
+
+    .slide p {
+      font-size: 1.2rem;
+      color: #2d3436;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 15px;
+    }
+
+    .controls button {
+      padding: 10px 20px;
+      border: none;
+      background-color: #ff6b81;
+      color: white;
+      font-size: 1rem;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .controls button:hover:enabled {
+      background-color: #ff4757;
+    }
+
+    .controls button:disabled {
+      background-color: #ffd6d6;
+      cursor: not-allowed;
+    }
+
+    .end-btn {
+      margin-top: 15px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      border-radius: 25px;
+      background-color: #ff6b81;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    .end-btn:hover {
+      background-color: #ff4757;
+    }
+
+    #goodbye-scene, #yes-scene {
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 100vw;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 99;
+      text-align: center;
+    }
+
+    #goodbye-scene {
+      background: radial-gradient(ellipse at bottom, #000000 0%, #0f0f0f 100%);
+      color: white;
+    }
+
+    #yes-scene {
+      background: radial-gradient(circle, #fff0f5 0%, #fad0c4 100%);
+      color: #d63384;
+    }
+
+    #goodbye-scene h1, #yes-scene h1 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+      z-index: 2;
+    }
+
+    #goodbye-scene img, #yes-scene img {
+      width: 180px;
+      margin: 20px 0;
+      z-index: 2;
+    }
+
+    #typed-text::after {
+      content: '|';
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+    }
+
+    /* 📱 Responsive Mobile Layout */
+    @media (max-width: 600px) {
+      .slider-container {
+        height: 95vh;
+        padding: 15px 10px;
+        border-radius: 10px;
+      }
+
+      .slide img {
+        width: 60%;
+        max-width: 160px;
+        margin-bottom: 15px;
+      }
+
+      .slide p {
+        font-size: 1rem;
+        padding: 0 10px;
+      }
+
+      .controls {
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      .controls button, .end-btn {
+        width: 100%;
+        font-size: 1rem;
+        padding: 10px;
+      }
+
+      #yes-scene h1,
+      #goodbye-scene h1 {
+        font-size: 1.4rem;
+        padding: 0 20px;
+      }
+
+      #yes-scene img,
+      #goodbye-scene img {
+        width: 140px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="slider-container" id="slider">
+    <div class="slides">
+      <div class="slide active">
+        <img src="https://media.tenor.com/CedXUNwq3fcAAAAi/tkthao219-bubududu.gif" alt="Hi">
+        <p>Hi Ishanvi... ❤️</p>
+      </div>
+      <div class="slide">
+        <img src="https://media.tenor.com/rwZ1KmV8ZAoAAAAi/bubu-dudu-sseeyall.gif" alt="Friends">
+        <p>I know from your side we are just friends 😔</p>
+      </div>
+      <div class="slide">
+        <img src="https://media.tenor.com/GKDHe7Fw9mgAAAAi/dudu-huh-cute.gif" alt="Trap">
+        <p>But is it my fault you pulled me out of that trap? 😳</p>
+      </div>
+      <div class="slide">
+        <img src="https://media.tenor.com/lSgJHaor3IAAAAAi/bubu-onetwo.gif" alt="Talk">
+        <p>Little by little, I got addicted to your jokes and talk 🤭</p>
+      </div>
+      <div class="slide">
+        <img src="https://media.tenor.com/viigAdT05UEAAAAi/bubu-dudu-sseeyall.gif" alt="Trust">
+        <p>I know you don’t fully trust me 😞</p>
+      </div>
+      <div class="slide">
+        <img src="https://media1.tenor.com/m/sqMrmFmyejwAAAAC/hug.gif" alt="Build Trust">
+        <p>But can’t we build something new, together? 🙌</p>
+      </div>
+      <div class="slide">
+        <img src="https://media.tenor.com/lquwmqAgQekAAAAi/bubu-dudu.gif" alt="With You">
+        <p>I’ll always be with you... but not like this 💔</p>
+      </div>
+      <div class="slide">
+        <img src="https://media.tenor.com/q9124Fxqpu8AAAAi/sseeyall-bubu-dudu.gif" alt="Pain">
+        <p>It’s just painful for me to keep hiding how I feel 😢</p>
+      </div>
+      <div class="slide">
+        <img src="https://media.tenor.com/SFy5Za0DyMEAAAAi/erm-fingers.gif" alt="Question">
+        <p><strong>Will you give us a chance? 💕</strong></p>
+        <button class="end-btn" onclick="askLove()">Answer Me 💬</button>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button onclick="prevSlide()">⬅️ Back</button>
+      <button onclick="nextSlide()">Next ➡️</button>
+    </div>
+  </div>
+
+  <div id="goodbye-scene">
+    <h1>I'll always cherish the memories... ✨</h1>
+    <img src="https://media.tenor.com/29xAtau4wo4AAAAi/bubu-dudu-sseeyall.gif" alt="Goodbye Hug">
+    <canvas id="fireworks"></canvas>
+  </div>
+
+  <div id="yes-scene">
+    <h1 id="typed-text"></h1>
+    <img src="https://media.tenor.com/n5oA4ZZUgy8AAAAi/bubu-dudu-bubu-love.gif" alt="Together">
+  </div>
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    const btnPrev = document.querySelector('.controls button:nth-child(1)');
+    const btnNext = document.querySelector('.controls button:nth-child(2)');
+    let currentIndex = 0;
+
+    function showSlide(index) {
+      slides.forEach((slide, i) => slide.classList.remove('active'));
+      slides[index].classList.add('active');
+      updateControls();
+    }
+
+    function updateControls() {
+      btnPrev.disabled = currentIndex === 0;
+      btnNext.disabled = currentIndex === slides.length - 1;
+    }
+
+    function nextSlide() {
+      if (currentIndex < slides.length - 1) {
+        currentIndex++;
+        showSlide(currentIndex);
+      }
+    }
+
+    function prevSlide() {
+      if (currentIndex > 0) {
+        currentIndex--;
+        showSlide(currentIndex);
+      }
+    }
+
+    function askLove() {
+      Swal.fire({
+        title: "Will you give us a chance? 💖",
+        text: "No pressure, just my honest heart.",
+        showDenyButton: true,
+        confirmButtonText: "Yes ❤️",
+        denyButtonText: `No 😢`,
+        background: '#fff',
+        backdrop: `rgba(0,0,0,0.4)`
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire({
+            title: "You just made my world brighter! 🌟",
+            imageUrl: "https://media.tenor.com/oWTGv7XpHY4AAAAi/sseeyall-bubu-dudu.gif",
+            imageWidth: 150,
+            confirmButtonText: "Awww 💖",
+            background: '#fff',
+            preConfirm: () => {
+              showYesScene();
+            }
+          });
+        } else {
+          Swal.fire({
+            title: "Okay... I understand.",
+            text: "Please block me if that's what feels right. I’ll still care from afar. 😔",
+            confirmButtonText: "Goodbye 💔",
+            background: '#fff',
+            preConfirm: () => {
+              document.getElementById("slider").style.display = "none";
+              document.getElementById("goodbye-scene").style.display = "flex";
+              startFireworks();
+            }
+          });
+        }
+      });
+    }
+
+    function showYesScene() {
+      document.getElementById("slider").style.display = "none";
+      document.getElementById("yes-scene").style.display = "flex";
+      typeText("This is just the beginning... 💖", "typed-text");
+    }
+
+    function typeText(text, elementId, speed = 75) {
+      let i = 0;
+      const element = document.getElementById(elementId);
+      element.innerHTML = '';
+      function type() {
+        if (i < text.length) {
+          element.innerHTML += text.charAt(i);
+          i++;
+          setTimeout(type, speed);
+        }
+      }
+      type();
+    }
+
+    function startFireworks() {
+      const canvas = document.getElementById('fireworks');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const particles = [];
+      const colors = ['#ff7675', '#ffeaa7', '#a29bfe', '#fd79a8', '#81ecec'];
+
+      function createFirework(x, y) {
+        for (let i = 0; i < 100; i++) {
+          particles.push({
+            x: x,
+            y: y,
+            vx: (Math.random() - 0.5) * 5,
+            vy: (Math.random() - 0.5) * 5,
+            alpha: 1,
+            color: colors[Math.floor(Math.random() * colors.length)]
+          });
+        }
+      }
+
+      function animate() {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        particles.forEach((p, i) => {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.alpha -= 0.01;
+          if (p.alpha <= 0) particles.splice(i, 1);
+          else {
+            ctx.globalAlpha = p.alpha;
+            ctx.fillStyle = p.color;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, 2, 0, 2 * Math.PI);
+            ctx.fill();
+          }
+        });
+
+        ctx.globalAlpha = 1;
+        requestAnimationFrame(animate);
+      }
+
+      setInterval(() => {
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * canvas.height / 2;
+        createFirework(x, y);
+      }, 1000);
+
+      animate();
+    }
+
+    window.onload = () => {
+      showSlide(currentIndex);
+    };
+  </script>
+</body>
+</html>
